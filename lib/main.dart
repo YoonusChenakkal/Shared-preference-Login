@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:login_demo2/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MainApp());
@@ -22,6 +24,32 @@ class Login_page extends StatefulWidget {
 }
 
 class _Login_pageState extends State<Login_page> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    sharedprefs();
+  }
+  TextEditingController tcname =TextEditingController();
+  TextEditingController tcpass =TextEditingController();
+  
+  String username = '';
+  String password = '';
+  sharedprefs() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', username);
+    await prefs.setString('password', password);
+  }
+  apply(){
+    username=tcname.text;
+    password=tcpass.text;
+     Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => home(username,password),
+                          ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +82,7 @@ class _Login_pageState extends State<Login_page> {
                         color: Colors.white70,
                         borderRadius: BorderRadius.circular(40)),
                     child: TextField(
+                      controller: tcname,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(40))),
@@ -77,6 +106,7 @@ class _Login_pageState extends State<Login_page> {
                         color: Colors.white70,
                         borderRadius: BorderRadius.circular(40)),
                     child: TextField(
+                      controller: tcpass,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(40))),
@@ -92,8 +122,9 @@ class _Login_pageState extends State<Login_page> {
                 width: 170,
                 child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => home(),));
-                    }, child: Icon(Icons.forward_rounded)))
+                    apply();
+                    },
+                    child: Icon(Icons.forward_rounded)))
           ],
         ),
       ),
