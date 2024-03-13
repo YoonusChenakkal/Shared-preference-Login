@@ -24,30 +24,24 @@ class Login_page extends StatefulWidget {
 }
 
 class _Login_pageState extends State<Login_page> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    sharedprefs();
-  }
-  TextEditingController tcname =TextEditingController();
-  TextEditingController tcpass =TextEditingController();
-  
-  String username = '';
-  String password = '';
-  sharedprefs() async {
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+
+  // }
+
+  TextEditingController tcname = TextEditingController();
+  TextEditingController tcpass = TextEditingController();
+
+  setUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('username', username);
-    await prefs.setString('password', password);
-  }
-  apply(){
-    username=tcname.text;
-    password=tcpass.text;
-     Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => home(username,password),
-                          ));
+    await prefs.setString('username', tcname.text);
+    await prefs.setString('password', tcpass.text);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => home(),
+        ));
   }
 
   @override
@@ -122,7 +116,7 @@ class _Login_pageState extends State<Login_page> {
                 width: 170,
                 child: ElevatedButton(
                     onPressed: () {
-                    apply();
+                      setUser();
                     },
                     child: Icon(Icons.forward_rounded)))
           ],
